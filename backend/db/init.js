@@ -16,7 +16,8 @@ const init = async() => {
             name TEXT NOT NULL,
             email TEXT UNIQUE NOT NULL,
             password TEXT NOT NULL,
-            created_at TIMESTAMP DEFAULT NOW()
+            created_at TIMESTAMP DEFAULT NOW(),
+            is_admin BOOLEAN DEFAULT FALSE
         );
 
         CREATE TABLE fragrances(

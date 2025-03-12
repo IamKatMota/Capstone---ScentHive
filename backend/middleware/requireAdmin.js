@@ -1,4 +1,4 @@
-const pool = require("../db");
+const pool = require("../db/db");
 
 const requireAdmin = async (req, res, next) =>{
     try {
