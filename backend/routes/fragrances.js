@@ -1,5 +1,7 @@
 const express = require ("express");
 const pool = require("../db/db");
+const authenticateUser = require("../middleware/authenticateUser");
+const requireAdmin = require("../middleware/requireAdmin");
 const router = express.Router();
 
 //get all fragrances
@@ -29,7 +31,7 @@ router.get("/:id", async (req, res) => {
 });
 
 //create a new fragrance (admin-only)
-router.post("/", async (req, res)=> {
+router.post("/", authenticateUser, requireAdmin,async (req, res)=> {
     try {
         const {name, brand, launch_date, perfumers, notes, description} = req.body;
         const result = await pool.query(
@@ -58,8 +60,31 @@ router.post("/", async (req, res)=> {
     }
 });
 
+//edit fragrance details (Admin-only)
+router.put("/:id", authenticateUser, requireAdmin, async (req, res) => {
+    const {id} = req.params;
+    const { name, brand, launch_date, perfumers, notes, description } = req.body;
+
+    try {
+        const result = await pool.query(
+            `UPDATE fragrances
+            SET name = $1, brand = $2, launch_date = $3, perfumers = $4, notes = $5, description = $6
+            WHERE id = $7
+            RETURNING *`,[name, brand, launch_date, perfumers, notes, description, id]
+        );
+
+        if (result.rows.length === 0){
+            return res.status(404).json({error: "Fragrance not found"});
+        }
+        res.json({message: "Fragrance updated successfully."});
+    } catch (error) {
+        console.error("Error updating fragrance:", error);
+        res.status(500).json({error: "Internal Server Error"});
+    }
+});
+
 //delete a fragrance (admin-only)
-router.delete("/:id", async (req, res)=> {
+router.delete("/:id", authenticateUser, requireAdmin,async (req, res)=> {
     try {
         const { id } = req.params;
         const result = await pool.query(
