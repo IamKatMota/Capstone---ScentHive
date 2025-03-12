@@ -1,17 +1,15 @@
 const express = require('express');
-const pg = require('pg');
+const pool = require("./db/db"); //import db connection
+require("dotenv").config();
 
 const app = express();
 app.use(express.json());
 
-//db client
-const client = new pg.Client("postgres://kat:Kat1234@localhost:5432/scent_hive_db");
 
-//connect and initialize the tables
+//initialize the tables
 const init = async() => {
     try {
-        await client.connect();
-        console.log("Connected to PostgreSQL"); //DELETE LATER
+        console.log("Connected to PostgreSQL"); //DEBUG DELETE LATER
 
         const SQL = `
         DROP TABLE IF EXISTS reviews;
@@ -30,6 +28,8 @@ const init = async() => {
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             name TEXT NOT NULL,
             brand TEXT NOT NULL,
+            launch_date INTEGER NOT NULL,
+            perfumers TEXT NOT NULL,
             notes TEXT,
             description TEXT,
             created_at TIMESTAMP DEFAULT NOW()
@@ -39,13 +39,13 @@ const init = async() => {
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             content TEXT NOT NULL,
             rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
-            fragrance_id UUID REFRENCES fragrances(id),
-            user_id UUID REFRENCES users(id),
+            fragrance_id UUID REFERENCES fragrances(id),
+            user_id UUID REFERENCES users(id),
             created_at TIMESTAMP DEFAULT NOW()
         );
         `;
-        await client.query(SQL);
-        console.log("Database tables initialized successfully"); //DELETE LATER
+        await pool.query(SQL);
+        console.log("Database tables initialized successfully"); //DEBUG DELETE LATER
 
     } catch (error) {
         console.error("❌ Database initialization error:", error);
