@@ -1,0 +1,20 @@
+const jwt = require("jsonwebtoken");
+
+const authenticateUser = (req, res, next) => {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith("Bearer ")) {
+        return res.status(401).json({error: "Unauthorized: No token provided."});
+    }
+
+    const token = authHeader.split(" ")[1]; //seperate token from Bearer keyword
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);//decode and verify token using secret key in env
+        req.user = decoded //attach user info to request object
+        next();
+    } catch (error) {
+        return res.status(403).json({error: "Forbidden: invalid token"});
+    }
+};
+
+module.exports = authenticateUser;
