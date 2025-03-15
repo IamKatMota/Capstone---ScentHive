@@ -7,7 +7,11 @@ const requireAdmin = require("../middleware/requireAdmin");
 
 const router = express.Router();
 
-//register new user
+/**
+ * Register User
+ * @route POST /api/register
+ * @access Public
+ */
 router.post("/register", async (req, res) => {
     const { name, email, password } = req.body;
 
@@ -35,12 +39,20 @@ router.post("/register", async (req, res) => {
     }
 });
 
-//user login and token generation
+/**
+ * Login User
+ * @route POST /api/login
+ * @access Public
+ */
 router.post("login", async (req,res) => {
     const {email, password} = req.body;
 
     try {
-        const userRes = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
+        const userRes = await pool.query(`
+            SELECT * FROM users 
+            WHERE email = $1`, 
+            [email]
+        );
         if (userRes.rows.length === 0 ) return res.status(401).json({error: "Invalid credentials"});
 
         const user = userRes.rows[0];
@@ -56,10 +68,19 @@ router.post("login", async (req,res) => {
     }
 });
 
-//get current user profile
+/**
+ * Get Current User (Authenticated User)
+ * @route GET /api/me
+ * @access Private
+ */
 router.get("/me", authenticateUser, async (req,res) => {
     try {
-        const result = await pool.query(`SELECT id, name, email, is_admin FROM users WHERE is = $1`, [req.user.id]); 
+        const result = await pool.query(`
+            SELECT id, name, email, is_admin 
+            FROM users 
+            WHERE is = $1`, 
+            [req.user.id]
+        ); 
         if (result.rows.length === 0) return res.status(404).json({error: "User not found"});
 
         res.json(result.rows[0]);
@@ -69,10 +90,16 @@ router.get("/me", authenticateUser, async (req,res) => {
     }
 });
 
-//ADMIN ONLY: get all users
+/**
+ * Get ALL Users (Admin only)
+ * @route GET /api/users
+ * @access Private 
+ */
 router.get("/", authenticateUser, requireAdmin, async (req,res) => {
     try {
-        const result = await pool.query(`SELECT id, name, email, is_admin FROM users`);
+        const result = await pool.query(`
+            SELECT id, name, email, is_admin 
+            FROM users`);
         res.json(result.rows);
     } catch (error) {
         console.error("Error fetching users:", error);
@@ -80,12 +107,22 @@ router.get("/", authenticateUser, requireAdmin, async (req,res) => {
     }
 });
 
-//ADMIN ONLY: assign admin role
+/**
+ * Update admin status (Admin only)
+ * @route PATCH /api/:id/admin
+ * @access Private
+ */
+
 router.patch("/:id/admin", authenticateUser, requireAdmin, async (req,res) => {
     const {id} = req.params;
 
     try {
-        await pool.query(`UPDATE users SET is_admin = TRUE WHERE id = $1`, [id]);
+        await pool.query(`
+            UPDATE users 
+            SET is_admin = TRUE 
+            WHERE id = $1`, 
+            [id]
+        );
         res.json({message: "User promoted to admin success"});
     } catch (error) {
         console.error("Error updating user:", error);

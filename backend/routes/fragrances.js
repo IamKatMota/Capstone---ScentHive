@@ -19,7 +19,10 @@ router.get("/", async (req, res)=> {
 router.get("/:id", async (req, res) => {
     try {
         const { id } = req.params; //get id from url
-        const result = await pool.query(`SELECT ALL FROM fragrances WHERE id = $1`, [id]);
+        const result = await pool.query(`
+            SELECT ALL FROM fragrances 
+            WHERE id = $1`, 
+            [id]);
         if (result.rows.length === 0) {
             return res.status(404).json({ error: "Fragrance not found" });
         }
@@ -52,7 +55,8 @@ router.post("/", authenticateUser, requireAdmin,async (req, res)=> {
                 $4, 
                 $5,
                 $6)
-            RETURNING *`, [name, brand, launch_date, perfumers, notes, description]
+            RETURNING *`, 
+            [name, brand, launch_date, perfumers, notes, description]
         );
         res.status(201).json(result.rows[0]);
     } catch (error) {
@@ -70,7 +74,8 @@ router.put("/:id", authenticateUser, requireAdmin, async (req, res) => {
             `UPDATE fragrances
             SET name = $1, brand = $2, launch_date = $3, perfumers = $4, notes = $5, description = $6
             WHERE id = $7
-            RETURNING *`,[name, brand, launch_date, perfumers, notes, description, id]
+            RETURNING *`,
+            [name, brand, launch_date, perfumers, notes, description, id]
         );
 
         if (result.rows.length === 0){
@@ -88,7 +93,10 @@ router.delete("/:id", authenticateUser, requireAdmin,async (req, res)=> {
     try {
         const { id } = req.params;
         const result = await pool.query(
-            `DELETE FROM fragrances WHERE id = $1 RETURNING *`, [id]
+            `DELETE FROM fragrances 
+            WHERE id = $1 
+            RETURNING *`, 
+            [id]
         );
         if(result.rows.length === 0){
             res.json({message: "Fragrance deleted successfully."})
