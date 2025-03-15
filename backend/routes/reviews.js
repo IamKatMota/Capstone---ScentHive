@@ -1,7 +1,6 @@
 const express = require("express");
 const pool = require("../db/db");
 const authenticateUser = require("../middleware/authenticateUser");
-const requireAdmin = require("../middleware/requireAdmin");
 
 const router = express.Router();
 
@@ -22,7 +21,7 @@ router.post("/", authenticateUser, async (req,res)=> {
                 content, 
                 rating
             )
-            VALUE (
+            VALUES (
                 gen_random_uuid(),
                 $1,
                 $2,
@@ -57,7 +56,7 @@ router.get("/:fragrance_id", async(req,res)=> {
         res.json(result.rows);
     } catch (error) {
         console.error("Error fetching reviews:", error);
-        res.send(500).json({error: "Internal Server Error"});
+        res.status(500).json({error: "Internal Server Error"});
     }
 });
 
@@ -66,7 +65,7 @@ router.get("/:fragrance_id", async(req,res)=> {
  * @route PATCH /api/reviews/:id
  * @access Private
  */
-router.patch("/id", authenticateUser, async (req,res)=>{
+router.patch("/:id", authenticateUser, async (req,res)=>{
     const {id} = req.params;
     const {content, rating} = req.body;
 

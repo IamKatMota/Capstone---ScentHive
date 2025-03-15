@@ -44,7 +44,7 @@ router.post("/register", async (req, res) => {
  * @route POST /api/login
  * @access Public
  */
-router.post("login", async (req,res) => {
+router.post("/login", async (req,res) => {
     const {email, password} = req.body;
 
     try {
@@ -59,7 +59,7 @@ router.post("login", async (req,res) => {
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(401).json({ error: "Invalid credentials"});
 
-        const token = jwt.sign({ id: user.id, is_admin: user.is_admin}, process.env.JST_SECRET, { expiresIn: "2d"});
+        const token = jwt.sign({ id: user.id, is_admin: user.is_admin}, process.env.JWT_SECRET, { expiresIn: "2d"});
 
         res.json({message: "Login successful", token});
     }catch(error) {
@@ -74,11 +74,13 @@ router.post("login", async (req,res) => {
  * @access Private
  */
 router.get("/me", authenticateUser, async (req,res) => {
+    console.log("🔍 Fetching user data for ID:", req.user.id); // Debugging
+
     try {
         const result = await pool.query(`
             SELECT id, name, email, is_admin 
             FROM users 
-            WHERE is = $1`, 
+            WHERE id = $1`, 
             [req.user.id]
         ); 
         if (result.rows.length === 0) return res.status(404).json({error: "User not found"});

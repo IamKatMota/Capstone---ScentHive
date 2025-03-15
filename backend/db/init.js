@@ -1,4 +1,4 @@
-const pool = require("./db/db"); //import db connection
+const pool = require("./db"); //import db connection
 
 
 //initialize the tables
