@@ -26,7 +26,7 @@ router.post("/", authenticateUser, async (req,res)=> {
                 $1,
                 $2,
                 $3,
-                $4)
+                $4
             )
             RETURNING *`, 
             [fragrance_id, req.user.id, content, rating]
@@ -68,15 +68,32 @@ router.get("/:fragrance_id", async(req,res)=> {
 router.patch("/:id", authenticateUser, async (req,res)=>{
     const {id} = req.params;
     const {content, rating} = req.body;
+    console.log("Logged-in User ID:", req.user.id);
+    console.log("Attempting to edit review ID:", id);
 
     try {
+        // Check if the review exists and belongs to the user
+        const review = await pool.query(
+            "SELECT user_id FROM reviews WHERE id = $1", 
+            [id]
+        );
+
+        if (review.rows.length === 0) {
+            return res.status(404).json({ error: "Review not found" });
+        }
+
+        // Check if the user owns the review or is an admin
+        if (review.rows[0].user_id !== req.user.id && !req.user.is_admin) {
+            return res.status(403).json({ error: "Forbidden: You do not have permission to edit this review" });
+        }
+        // Proceed with update if authorized
         const result = await pool.query(`
             UPDATE reviews
             SET content = $1, rating = $2
             WHERE id = $3
-            AND user_id = $4
+            AND (user_id = $4 OR $5 = true)
             RETURNING *`,
-            [content, rating, id, req.user.id]
+            [content, rating, id, req.user.id, req.user.is_admin]
         );
 
         if(result.rows.length === 0) return res.status(403).json({error: "Unauthorized to edit this review"});
@@ -102,12 +119,12 @@ router.delete("/:id", authenticateUser, async (req,res)=> {
         const result = await pool.query(`
             DELETE FROM reviews
             WHERE id = $1
-            AND (user_id = $2 OR $3)
+            AND (user_id = $2 OR $3 = true)
             RETURNING *`,
             [
                 id, 
                 req.user.id, 
-                req.user.is_admin ? req.user.id : null,
+                req.user.is_admin
             ]);
         if (result.rows.length === 0) return res.status(500).json({error: "Unauthorized to delete this review"});
 
