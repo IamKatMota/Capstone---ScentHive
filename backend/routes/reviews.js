@@ -53,7 +53,7 @@ router.get("/:fragrance_id", async(req,res)=> {
             WHERE r.fragrance_id = $1`,
             [fragrance_id]
         );
-        res.json(result.rows);
+        res.status(200).json(result.rows);
     } catch (error) {
         console.error("Error fetching reviews:", error);
         res.status(500).json({error: "Internal Server Error"});
@@ -98,7 +98,7 @@ router.patch("/:id", authenticateUser, async (req,res)=>{
 
         if(result.rows.length === 0) return res.status(403).json({error: "Unauthorized to edit this review"});
 
-        res.json({message: "Review updated successfully", review: result.rows[0]});
+        res.status(200).json({message: "Review updated successfully", review: result.rows[0]});
     } catch (error) {
         console.error("Error updating review:", error);
         res.status(500).json({error: "Internal Server Error"});
@@ -128,7 +128,7 @@ router.delete("/:id", authenticateUser, async (req,res)=> {
             ]);
         if (result.rows.length === 0) return res.status(500).json({error: "Unauthorized to delete this review"});
 
-        res.json({message: "Review deleted successfully", deletedReview: result.rows[0]});
+        res.status(200).json({message: "Review deleted successfully", deletedReview: result.rows[0]});
     } catch (error) {
         console.error("Error deleting review:", error);
         res.status(500).json({error: "Internal Server Error"});

@@ -8,6 +8,11 @@ const pool = require("./db/db");
 const fragranceRoutes = require("./routes/fragrances"); 
 const reviewRoutes = require("./routes/reviews");
 const userRoutes = require("./routes/users");
+const wishlistRoutes = require("./routes/wishlist");
+const collectionRoutes = require("./routes/collection");
+const hadRoutes = require("./routes/had");
+const dislikedRoutes = require("./routes/disliked");
+const to_tryRoutes = require("./routes/to_try");
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -20,6 +25,11 @@ app.use(express.json()); //auto converts request body to js object
 app.use("/api/fragrances", fragranceRoutes); 
 app.use("/api/reviews", reviewRoutes);
 app.use("/api/users", userRoutes);
+app.use("/api/wishlist", wishlistRoutes);
+app.use("/api/had", hadRoutes);
+app.use("/api/to_try", to_tryRoutes);
+app.use("/api/collection", collectionRoutes);
+app.use("/api/disliked", dislikedRoutes);
 
 //default route
 app.get("/", (req, res) => {
