@@ -8,7 +8,12 @@ const init = async() => {
 
         const SQL = `
         DROP TABLE IF EXISTS reviews;
-        DROP TABLE IF EXISTS fragrances;
+        DROP TABLE IF EXISTS wishlist;
+        DROP TABLE IF EXISTS collection;
+        DROP TABLE IF EXISTS disliked;
+        DROP TABLE IF EXISTS to_try;
+        DROP TABLE IF EXISTS had;
+        DROP TABLE IF EXISTS fragrances CASCADE;
         DROP TABLE IF EXISTS users;
 
         CREATE TABLE users (
@@ -38,6 +43,46 @@ const init = async() => {
             fragrance_id UUID REFERENCES fragrances(id),
             user_id UUID REFERENCES users(id),
             created_at TIMESTAMP DEFAULT NOW()
+        );
+
+        CREATE TABLE wishlist (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+            fragrance_id UUID REFERENCES fragrances(id) ON DELETE CASCADE,
+            created_at TIMESTAMP DEFAULT now(),
+            UNIQUE(user_id, fragrance_id)
+        );
+
+        CREATE TABLE collection (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+            fragrance_id UUID REFERENCES fragrances(id) ON DELETE CASCADE,
+            created_at TIMESTAMP DEFAULT now(),
+            UNIQUE(user_id, fragrance_id)
+        );
+
+        CREATE TABLE to_try (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+            fragrance_id UUID REFERENCES fragrances(id) ON DELETE CASCADE,
+            created_at TIMESTAMP DEFAULT now(),
+            UNIQUE(user_id, fragrance_id)
+        );
+
+        CREATE TABLE disliked (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+            fragrance_id UUID REFERENCES fragrances(id) ON DELETE CASCADE,
+            created_at TIMESTAMP DEFAULT now(),
+            UNIQUE(user_id, fragrance_id)
+        );
+
+        CREATE TABLE had (
+            id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+            user_id UUID REFERENCES users(id) ON DELETE CASCADE,
+            fragrance_id UUID REFERENCES fragrances(id) ON DELETE CASCADE,
+            created_at TIMESTAMP DEFAULT now(),
+            UNIQUE(user_id, fragrance_id)
         );
         `;
         await pool.query(SQL);
