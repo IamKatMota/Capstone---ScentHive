@@ -1,5 +1,5 @@
 import { useState } from "react";
-import api from "../api";
+import api from "../api/api";
 
 const Register = () => {
     const [name, setName] = useState("");
@@ -26,7 +26,7 @@ const Register = () => {
                 <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="submit">Register</button>
             </form>
-            {error && <p>{error}</p>}
+            {error && <p style={{ color: "red" }}>{error}</p>}
         </div>
     );
 };

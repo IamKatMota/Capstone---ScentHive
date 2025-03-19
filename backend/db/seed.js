@@ -40,7 +40,7 @@ const seedDatabase = async() => {
 
         //insert test fragrances
         const fragranceRes = await pool.query(
-            `INSERT INTO fragrances (id, name, brand, launch_date, perfumers, notes, description) 
+            `INSERT INTO fragrances (id, name, brand, launch_date, perfumers, notes, description, image) 
             VALUES 
             (
                 gen_random_uuid(), 
@@ -49,7 +49,8 @@ const seedDatabase = async() => {
                 2015,
                 'François Demachy',
                 'Calabrian bergamot, Sichuan Pepper, Lavender, Pink Pepper, Vetiver, Patchouli, Geranium, Elemi, Ambroxan, Labdanum', 
-                'A fresh and spicy fragrance with a woody base.'
+                'A fresh and spicy fragrance with a woody base.',
+                'https://fimgs.net/mdimg/perfume/375x500.31861.jpg'
             ),
             (
                 gen_random_uuid(), 
@@ -58,7 +59,8 @@ const seedDatabase = async() => {
                 2009,
                 'Anne Flipo, Pierre Wargnye, Dominique Ropion',
                 'Cardamom, Lavender, Virginia Cedar, Bergamot, Vetiver, Caraway', 
-                'A woody and spicy fragrance perfect for evenings.'
+                'A woody and spicy fragrance perfect for evenings.',
+                'https://fimgs.net/mdimg/perfume/375x500.5521.jpg'
             )
             RETURNING id`
         );

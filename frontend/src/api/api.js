@@ -1,7 +1,8 @@
+//library that helps communicate with the backend
 import axios from "axios";
 
 // Set the base URL from environment variables
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:5001/api";
 
 // Create an Axios instance with default settings
 const api = axios.create({

@@ -8,7 +8,8 @@ const {
     getFragranceById,
     addFragrance,
     updateFragrance,
-    deleteFragrance
+    deleteFragrance,
+    searchFragrances
 } = require ("../models/fragranceModel");
 
 //get all fragrances
@@ -21,6 +22,21 @@ router.get("/", async (req, res)=> {
         res.status(500).json({ error: "Internal Server Error" });
     }
 })
+// Search fragrances by name, perfumer, brand, or notes
+router.get("/search", async (req, res) => {
+    try {
+        const { q } = req.query; // Get search query from URL
+        if (!q) {
+            return res.status(400).json({ error: "Search query is required" });
+        }
+        const result = await searchFragrances(q);
+
+        res.status(200).json(result);
+    } catch (error) {
+        console.error("Error fetching search results:", error);
+        res.status(500).json({ error: "Internal Server Error" });
+    }
+});
 
 //get fragrances by id
 router.get("/:id", async (req, res) => {
@@ -73,6 +89,8 @@ router.delete("/:id", authenticateUser, requireAdmin,async (req, res)=> {
     } catch (error) {
         res.status(500).json({error: "Error deleting fragrance."});
     }
-})
+});
+
+
 
 module.exports = router;

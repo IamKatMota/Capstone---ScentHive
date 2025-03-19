@@ -1,21 +1,26 @@
 import { useState, useEffect } from "react";
 import AuthContext from "./AuthContext";
 
-export const AuthProvider = ({ children }) => {
+const AuthProvider = ({ children }) => {
+    // Get token and role from localStorage if available
     const [authToken, setAuthToken] = useState(localStorage.getItem("authToken") || null);
+    const [isAdmin, setIsAdmin] = useState(localStorage.getItem("isAdmin") === "true"); // Convert to boolean
 
     useEffect(() => {
         if (authToken) {
-            localStorage.setItem("authToken", authToken); // Store token in localStorage
+            localStorage.setItem("authToken", authToken); // Store token
+            localStorage.setItem("isAdmin", isAdmin); // Store admin status
         } else {
-            localStorage.removeItem("authToken"); // Remove token on logout
+            localStorage.removeItem("authToken");
+            localStorage.removeItem("isAdmin");
         }
-    }, [authToken]);
+    }, [authToken, isAdmin]);
 
     //makes authToken available to all children components w/o passing props
     return (
-        <AuthContext.Provider value={{ authToken, setAuthToken }}>
+        <AuthContext.Provider value={{ authToken, setAuthToken, isAdmin, setIsAdmin }}>
             {children}
         </AuthContext.Provider>
     );
 };
+export default AuthProvider;

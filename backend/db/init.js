@@ -33,6 +33,7 @@ const init = async() => {
             perfumers TEXT NOT NULL,
             notes TEXT,
             description TEXT,
+            image TEXT,
             created_at TIMESTAMP DEFAULT NOW()
         );
         
