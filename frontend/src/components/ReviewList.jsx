@@ -1,7 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import api from "../api/api";
+import AuthContext from "../context/AuthContext";
 
 const ReviewList = ({ fragranceId }) => {
+    const { user } = useContext(AuthContext); // get user from context
     const [reviews, setReviews] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
@@ -22,6 +24,19 @@ const ReviewList = ({ fragranceId }) => {
         fetchReviews();
     }, [fragranceId]);
 
+    const handleDelete = async (reviewId) => {
+        const confirmed = window.confirm("Are you sure you want to delete this review?");
+        if (!confirmed) return;
+
+        try {
+            await api.delete(`/reviews/${reviewId}`);
+            setReviews(reviews.filter((r) => r.id !== reviewId));
+        } catch (err) {
+            console.error("Failed to delete review:", err);
+            alert("Error deleting review.");
+        }
+    };
+
     const renderStars = (rating) => {
         return [...Array(5)].map((_, i) => (
             <i
@@ -40,8 +55,18 @@ const ReviewList = ({ fragranceId }) => {
             {reviews.map((review) => (
                 <div
                     key={review.id}
-                    className="w-96 bg-white shadow-md rounded-md p-6 flex flex-col justify-between"
+                    className="w-96 bg-white shadow-md rounded-md p-6 flex flex-col justify-between relative"
                 >
+                    {/* Delete Button for Owner */}
+                    {user?.id === review.user_id && (
+                        <button
+                            onClick={() => handleDelete(review.id)}
+                            className="absolute top-3 right-3 text-sm text-red-500 hover:underline"
+                        >
+                            Delete
+                        </button>
+                    )}
+
                     {/* Star Rating */}
                     <div className="stars flex gap-1 mb-4">
                         {renderStars(review.rating)}

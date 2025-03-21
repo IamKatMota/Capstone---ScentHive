@@ -45,7 +45,7 @@ const getLatestReviews = async () => {
 // Get all reviews for a specific fragrance
 const getReviewsByFragrance = async (fragrance_id) => {
     const result = await pool.query(`
-        SELECT r.id, r.content, r.rating, r.created_at, u.name AS reviewer
+        SELECT r.id, r.content, r.rating, r.user_id, r.created_at, u.name AS reviewer
         FROM reviews r
         JOIN users u ON r.user_id = u.id
         WHERE r.fragrance_id = $1`,

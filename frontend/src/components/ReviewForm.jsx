@@ -18,11 +18,6 @@ const ReviewForm = ({ fragranceId, onReviewSubmit }) => {
             const response = await api.post(
                 "/reviews",
                 { fragrance_id: fragranceId, rating, content },
-                {
-                    headers: {
-                        Authorization: `Bearer ${authToken}`,
-                    },
-                }
             );
             setSuccess("Review submitted successfully!");
             setContent("");
@@ -35,43 +30,60 @@ const ReviewForm = ({ fragranceId, onReviewSubmit }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="bg-white p-6 rounded shadow-md mt-6">
-            <h3 className="text-xl font-semibold mb-4">Leave a Review</h3>
-            <div className="mb-4">
-                <label className="block mb-1 font-medium">Rating</label>
-                <select
-                    className="w-full border px-3 py-2 rounded"
-                    value={rating}
-                    onChange={(e) => setRating(parseInt(e.target.value))}
-                    required
-                >
-                    {[5, 4, 3, 2, 1].map((val) => (
-                        <option key={val} value={val}>
-                            {val} {val === 1 ? "star" : "stars"}
-                        </option>
-                    ))}
-                </select>
+        <main className="w-full flex justify-center items-center py-10 bg-[#f9f5f0]">
+            <div className="max-w-3xl w-full bg-white text-gray-800 p-6 rounded-lg shadow-md border border-gray-200">
+                <form onSubmit={handleSubmit}>
+                    <h2 className="text-2xl font-semibold mb-4 text-gray-700">Leave a Review</h2>
+                    <p className="text-sm text-gray-500 mb-6">
+                        Share your thoughts — your review helps others explore new scents!
+                    </p>
+
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                        <div className="mb-4 col-span-1 md:col-span-3">
+                            <textarea
+                                id="content"
+                                value={content}
+                                onChange={(e) => setContent(e.target.value)}
+                                className="w-full px-4 py-3 bg-[#fdfdfd] rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-rose-300 resize-none"
+                                placeholder="Write your review here..."
+                                rows="4"
+                                required
+                            ></textarea>
+                        </div>
+
+                        <div className="mb-4">
+                            <label htmlFor="rating" className="text-sm font-medium text-gray-600 block mb-1">
+                                Rating
+                            </label>
+                            <select
+                                id="rating"
+                                value={rating}
+                                onChange={(e) => setRating(Number(e.target.value))}
+                                className="w-full px-4 py-2 bg-[#fdfdfd] rounded border border-gray-300 focus:outline-none focus:ring-1 focus:ring-rose-300"
+                            >
+                                {[5, 4, 3, 2, 1].map((num) => (
+                                    <option key={num} value={num}>
+                                        {num} Star{num > 1 && "s"}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    {error && <p className="text-red-500 text-sm mb-2">{error}</p>}
+                    {success && <p className="text-green-600 text-sm mb-2">{success}</p>}
+
+                    <div className="flex justify-end">
+                        <button
+                            type="submit"
+                            className="px-6 py-3 bg-rose-500 text-white font-medium rounded-md shadow hover:bg-rose-600 transition"
+                        >
+                            Post Review →
+                        </button>
+                    </div>
+                </form>
             </div>
-            <div className="mb-4">
-                <label className="block mb-1 font-medium">Review</label>
-                <textarea
-                    className="w-full border px-3 py-2 rounded"
-                    rows="4"
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                    placeholder="Share your thoughts..."
-                    required
-                />
-            </div>
-            {error && <p className="text-red-500 mb-2">{error}</p>}
-            {success && <p className="text-green-500 mb-2">{success}</p>}
-            <button
-                type="submit"
-                className="bg-indigo-500 text-white px-4 py-2 rounded hover:bg-indigo-600"
-            >
-                Submit Review
-            </button>
-        </form>
+        </main>
     );
 };
 
