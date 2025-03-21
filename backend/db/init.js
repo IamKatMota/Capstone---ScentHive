@@ -4,7 +4,10 @@ const pool = require("./db"); //import db connection
 //initialize the tables
 const init = async() => {
     try {
-        console.log("Connected to PostgreSQL"); //DEBUG DELETE LATER
+        // Automatically enable unaccent extension for search queries if not already
+        await pool.query(`CREATE EXTENSION IF NOT EXISTS unaccent`);
+
+        console.log("Connected to PostgreSQL"); 
 
         const SQL = `
         DROP TABLE IF EXISTS reviews;
@@ -30,9 +33,11 @@ const init = async() => {
             name TEXT NOT NULL,
             brand TEXT NOT NULL,
             launch_date INTEGER NOT NULL,
-            perfumers TEXT NOT NULL,
-            notes TEXT,
-            description TEXT,
+            perfumers TEXT[],
+            notes TEXT[],
+            top_notes TEXT[],  -- Stores top notes as an array
+            heart_notes TEXT[], 
+            base_notes TEXT[],            description TEXT,
             image TEXT,
             created_at TIMESTAMP DEFAULT NOW()
         );

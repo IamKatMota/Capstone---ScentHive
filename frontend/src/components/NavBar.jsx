@@ -39,7 +39,7 @@ const Navbar = () => {
             <div className="search-container">
                 <input
                     type="text"
-                    placeholder="Search fragrances, perfumers, notes..."
+                    placeholder="Search"
                     value={searchQuery}
                     onChange={handleSearch}
                 />

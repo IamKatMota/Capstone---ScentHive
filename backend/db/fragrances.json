@@ -1,0 +1,159 @@
+[
+    {
+        "name": "Sauvage", 
+        "brand": "Dior", 
+        "launch_date": 2015,
+        "perfumers": ["François Demachy"],
+        "notes":[],
+        "top_notes":["Calabrian bergamot", "Pepper"],
+        "heart_notes": ["Sichuan Pepper", "Lavender", "Pink Pepper", "Vetiver", "Patchouli", "Geranium", "Elemi"], 
+        "base_notes": ["Ambroxan", "Cedar" , "Labdanum"] ,
+        "description": "A fresh and spicy fragrance with a woody base.",
+        "image": "https://fimgs.net/mdimg/perfume/375x500.31861.jpg"
+    },
+    {
+        "name": "La Nuit de L'Homme",
+        "brand": "YSL",
+        "launch_date": 2009,
+        "perfumers": ["Anne Flipo", "Pierre Wargnye", "Dominique Ropion"],
+        "notes":[],
+        "top_notes":["Cardamom"],
+        "heart_notes": ["Lavender", "Virginia Cedar", "Bergamot"], 
+        "base_notes": ["Vetiver", "Caraway"] ,
+        "description": "A woody and spicy fragrance perfect for evenings.",
+        "image": "https://fimgs.net/mdimg/perfume/375x500.5521.jpg"
+
+    },
+    {
+        "name": "Verna",
+        "brand": "Tiziana Terenzi",
+        "launch_date": 2025,
+        "perfumers": ["Paolo Terenzi"],
+        "notes":[],
+        "top_notes":["Bulgarian Rose", "Pink Pepper", "Saffron"],
+        "heart_notes": ["Tuberose", "Indian Jasmine", "Ylang Ylang", "Ambergris", "Cedarwood", "Incense", "Peach", "Leather", "Coconut"], 
+        "base_notes": ["Musk", "Ambergris", "Madagascar Vanilla", "Coumarin", "Fern", "Fennel"] ,
+        "description": "A spicy and floral fragrance with a warm woody base and hints of creamy sweetness.",
+        "image":"https://media.parfumo.com/perfumes/e0/e089b1_verna-tiziana-terenzi_1200.jpg?width=480&aspect_ratio=1:1"
+
+    },
+    {
+        "name": "Ocean The Rive ",
+        "brand": "Unique'e Luxury",
+        "launch_date": 2025,
+        "perfumers": ["Gökhan Şimşek"],
+        "notes":["Amber", "Basil", "Bergamot", "Cashmere wood", "Chamomile", "Grapefruit", "Mandarin orange"," Mugwort", "Musk", "Patchouli", "Sea breeze", "Vanilla"],
+        "top_notes":[],
+        "heart_notes": [], 
+        "base_notes": [] ,
+        "description": "A fresh and aquatic fragrance with herbal and citrusy notes over a warm, woody base.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.104325.jpg"
+
+    },
+    {
+        "name": "Fortuitous Finley",
+        "brand": "Penhaligon's",
+        "launch_date": 2025,
+        "perfumers": [],
+        "notes":[],
+        "top_notes":["Black pepper" , "Cardamom"],
+        "heart_notes": ["Matcha", "Salted pistachio", "Violet"], 
+        "base_notes": ["Orris root" ,"Patchouli","Suede"] ,
+        "description": "A bold and enigmatic fragrance with a seductive balance of warmth, depth, and intrigue.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.103514.jpg"
+
+    },
+    {
+        "name": "403 Myrrh Shadow",
+        "brand": "Bon Parfumeur",
+        "launch_date": 2025,
+        "perfumers": ["Amélie Jacquin", "Quentin Bisch"],
+        "notes":[],
+        "top_notes":["Bitter Orange", "Black currant leaf","Grapefruit"],
+        "heart_notes": ["Basil", "Timur", "Cinnamon" , "Cypress"], 
+        "base_notes": ["Myrrh", "Vanilla", "Akigalawood","Cosmone", "Benzoin", "Patchouli", "Musk" , "Atlas Cedar"] ,
+        "description": "A warm and resinous fragrance with spicy, woody, and balsamic depths.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.103049.jpg"
+
+    },
+    {
+        "name": "Carousel",
+        "brand": "Brown Girl Jane",
+        "launch_date": 2024,
+        "perfumers": ["Gabriela Chelariu"],
+        "notes":[],
+        "top_notes":["Spun Sugar", "Apple" , "Black Currant"],
+        "heart_notes": ["Orange Blossom", "Lily of the Valley" , "Coral Rose"], 
+        "base_notes": ["Leather", "Cherry", "Musk" , "Sandalwood"] ,
+        "description": "A playful and indulgent fragrance with a balance of fruity sweetness, airy musk, and creamy warmth.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.96269.jpg"
+
+    },
+    {
+        "name": "Guava Sorbet",
+        "brand": "House of Brandt",
+        "launch_date": 2024,
+        "perfumers": ["Kamila Lelakova"],
+        "notes":[],
+        "top_notes":["Guava", "Passionfruit", "Grapefruit", "Bergamot" , "Mandarin"],
+        "heart_notes": ["Guava", "Sugar", "Osmanthus" , "Jasmine"], 
+        "base_notes": ["Sandalwood", "Vanilla", "Musk" , "Amber"] ,
+        "description": "A vibrant and tropical fragrance with a juicy freshness and a playful, refined touch.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.96282.jpg"
+    },
+    {
+        "name": "Mirage Gourmand",
+        "brand": "Les Nobles Essences",
+        "launch_date": 2024,
+        "perfumers": ["Margaux Le Paih Guérin"],
+        "top_notes":["Pistachio", "Almond", "Cake", "Powdery Notes"],
+        "heart_notes": ["Almond", "Hazelnut" , "Tonka Bean"], 
+        "base_notes": ["Vanilla", "Guaiac Wood" , "White Musk"] ,
+        "description": "A rich and decadent fragrance with indulgent gourmand notes and an air of refined elegance.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.95205.jpg"
+    },
+    {
+        "name": "Town & Country",
+        "brand": "Clive Christian",
+        "launch_date": 2023,
+        "perfumers": ["Vincent Ricord"],
+        "top_notes":["Clary Sage"],
+        "heart_notes": ["Ambergris"], 
+        "base_notes": ["Sandalwood"] ,
+        "description": "A crisp and sophisticated fragrance with fresh herbal tones and a rich, elegant depth.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.83240.jpg"
+    },
+    {
+        "name": "City Of Stars",
+        "brand": "Louis Vuitton",
+        "launch_date": 2022,
+        "perfumers": ["Jacques Cavallier Belletrud"],
+        "top_notes":["Lime", "Blood Orange", "Blood Mandarin", "Lemon" , "Bergamot"],
+        "heart_notes": ["Tiare Flower"], 
+        "base_notes": ["Powdery Notes", "Musk" , "Sandalwood"] ,
+        "description": "A luminous and vibrant fragrance with sparkling citrus, delicate florals, and a soft, sensual base.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.73344.jpg"
+    },
+    {
+        "name": "Aventus",
+        "brand": "Creed",
+        "launch_date": 2010,
+        "perfumers": ["Jean-Christophe Hérault" , "Erwin Creed"],
+        "top_notes":["Bergamot", "Black Currant", "Apple", "Lemon" , "Pink Pepper"],
+        "heart_notes": ["Pineapple", "Patchouli" , "Moroccan Jasmine"], 
+        "base_notes": ["Birch", "Musk", "Oak Moss", "Ambroxan" , "Cedarwood."] ,
+        "description": "A bold and charismatic fragrance with a dynamic blend of fruity freshness, smoky woods, and a refined, masculine depth.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.9828.jpg"
+    },
+    {
+        "name": "Groove Xcape",
+        "brand": "Xerjoff",
+        "launch_date": 2023,
+        "perfumers": [""],
+        "top_notes":["Pepper", "Elemi", "Cardamom" , "Ginger"],
+        "heart_notes": ["Incense", "Myrhh", "Mimosa" , "Rose"], 
+        "base_notes": ["Cedar", "Labdanum", "Benzoin" , "Patchouli"] ,
+        "description": "A bold and rhythmic fragrance with spicy top notes, a mystical resinous heart, and a rich, woody finish.",
+        "image":"https://fimgs.net/mdimg/perfume/375x500.79028.jpg"
+    }
+]

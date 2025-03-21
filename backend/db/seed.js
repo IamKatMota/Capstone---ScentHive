@@ -1,5 +1,6 @@
 const pool = require("./db");
 const bcrypt = require("bcrypt"); //import bcrypt lib to hash pass for security
+const fs = require("fs"); //import file system module
 
 const seedDatabase = async() => {
     try {
@@ -39,32 +40,34 @@ const seedDatabase = async() => {
         const userIds = userRes.rows.map(row => row.id); //extract user IDs from db response
 
         //insert test fragrances
-        const fragranceRes = await pool.query(
-            `INSERT INTO fragrances (id, name, brand, launch_date, perfumers, notes, description, image) 
+        //read json file
+        const rawData = fs.readFileSync("db/fragrances.json")
+        const fragrances = JSON.parse(rawData);
+
+        //loop through array of frag objects from the json and extract ids
+        let fragranceIds = [];
+        for (let frag of fragrances) { 
+            const fragranceRes = await pool.query(
+            `INSERT INTO fragrances (id, name, brand, launch_date, perfumers, notes, top_notes, heart_notes,base_notes, description, image) 
             VALUES 
             (
                 gen_random_uuid(), 
-                'Sauvage', 
-                'Dior', 
-                2015,
-                'François Demachy',
-                'Calabrian bergamot, Sichuan Pepper, Lavender, Pink Pepper, Vetiver, Patchouli, Geranium, Elemi, Ambroxan, Labdanum', 
-                'A fresh and spicy fragrance with a woody base.',
-                'https://fimgs.net/mdimg/perfume/375x500.31861.jpg'
-            ),
-            (
-                gen_random_uuid(), 
-                'La Nuit de L''Homme', 
-                'YSL', 
-                2009,
-                'Anne Flipo, Pierre Wargnye, Dominique Ropion',
-                'Cardamom, Lavender, Virginia Cedar, Bergamot, Vetiver, Caraway', 
-                'A woody and spicy fragrance perfect for evenings.',
-                'https://fimgs.net/mdimg/perfume/375x500.5521.jpg'
+                $1, 
+                $2, 
+                $3,
+                $4,
+                $5, 
+                $6,
+                $7,
+                $8,
+                $9,
+                $10
             )
-            RETURNING id`
-        );
-        const fragranceIds = fragranceRes.rows.map(row => row.id);
+            RETURNING id`,
+            [frag.name, frag.brand, frag.launch_date, frag.perfumers, frag.notes, frag.top_notes, frag.heart_notes, frag.base_notes, frag.description, frag.image]
+            );
+            fragranceIds.push(fragranceRes.rows[0].id)
+        }
 
         //insert test reviews
         await pool.query(

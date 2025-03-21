@@ -38,7 +38,6 @@ const Home = () => {
             <header className="hero-section">
                 <h1>Welcome to Scent Hive</h1>
                 <p>Discover, curate, and build your perfect fragrance wardrobe.</p>
-                <Link to="/register" className="cta-button">Get Started</Link>
             </header>
 
             {/* New Releases */}
