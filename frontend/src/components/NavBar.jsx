@@ -38,7 +38,7 @@ const Navbar = () => {
             <div className='flex flex-wrap items-center gap-4 w-full'>
 
                 <Link to="/">
-                    <h3 className="text-2xl font-semibold">Scent Hive</h3>
+                    <h3 className="text-2xl font-semibold">🐝 Scent Hive</h3>
                 </Link>
 
                 {/* Nav Menu */}
@@ -87,7 +87,15 @@ const Navbar = () => {
                             </Link>
                         </>
                     ) : (
-                        <span className="text-gray-600 font-semibold">Welcome back!</span>
+                        <div className="flex items-center gap-3">
+                            <span className="text-gray-600 font-semibold">Welcome back!</span>
+                            <button
+                                onClick={handleLogout}
+                                className="px-3 py-1.5 text-sm border border-gray-400 rounded hover:bg-gray-100 transition"
+                            >
+                                Logout
+                            </button>
+                        </div>
                     )}
                 </div>
             </div>

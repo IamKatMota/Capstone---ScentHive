@@ -1,6 +1,6 @@
 # 🌿 Scent Hive - A Fragrance Community
 
-Scent Hive is a **Fragrantica-inspired web application** where users can **explore, review, and track their favorite fragrances**. Built using the **PERN stack (PostgreSQL, Express.js, React, Node.js)**, this platform allows fragrance enthusiasts to **discover new scents, share reviews, and build a personal collection**.
+Scent Hive is a **Fragrantica-inspired web application** where users can **explore, review, and track their favorite fragrances**. Built using the **PERN stack (PostgreSQL, Express.js, React, Node.js) & TailwindCSS**, this platform allows fragrance enthusiasts to **discover new scents, share reviews, and build a personal collection**.
 
 ## **🚀 Features**
 ✅ **User Authentication** - Sign up, log in, and manage your profile  
@@ -11,7 +11,7 @@ Scent Hive is a **Fragrantica-inspired web application** where users can **explo
 ✅ **Community Engagement** - Comment on reviews and interact with other users  
 
 ## **🛠️ Tech Stack**
-- **Frontend:** React, React Router, CSS  
+- **Frontend:** React, React Router, TailwindCSS  
 - **Backend:** Node.js, Express.js  
 - **Database:** PostgreSQL  
 - **Authentication:** JSON Web Tokens (JWT), bcrypt  
