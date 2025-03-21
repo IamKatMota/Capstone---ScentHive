@@ -11,7 +11,7 @@ const Fragrances = () => {
     useEffect(() => {
         const fetchFragrances = async () => {
             try {
-                const response = await api.get("/api/fragrances"); 
+                const response = await api.get("/fragrances"); 
                 console.log("API Response:", response.data);
                 setFragrances(response.data);
             } catch (error) {

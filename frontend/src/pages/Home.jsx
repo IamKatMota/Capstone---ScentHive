@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import api from "../api/api";
-import FragranceCard from "../components/FragranceCard";
 
 const Home = () => {
     const [fragrances, setFragrances] = useState([]);
@@ -40,7 +39,7 @@ const Home = () => {
                 style={{ backgroundImage: "url('/pexels-yi-ren-57040649-28664164.jpg')" }}
             >
                 {/*  Dims the background image */}
-                <div className="absolute inset-0 backdrop-brightness-50 backdrop-blur-sm z-0"></div>
+                <div className="absolute inset-0 backdrop-brightness-50 backdrop-blur-[3px] z-0"></div>
                 {/*  Text content */}
                 <div className="relative z-10 container mx-auto text-center text-white flex flex-col items-center justify-center h-full px-4">
                     <h1 className="text-5xl font-medium mb-6">Welcome to Scent Hive</h1>

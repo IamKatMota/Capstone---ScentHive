@@ -149,7 +149,7 @@
         "name": "Groove Xcape",
         "brand": "Xerjoff",
         "launch_date": 2023,
-        "perfumers": [""],
+        "perfumers": [],
         "top_notes":["Pepper", "Elemi", "Cardamom" , "Ginger"],
         "heart_notes": ["Incense", "Myrhh", "Mimosa" , "Rose"], 
         "base_notes": ["Cedar", "Labdanum", "Benzoin" , "Patchouli"] ,
