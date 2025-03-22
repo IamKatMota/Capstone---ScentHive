@@ -2,22 +2,28 @@ import { Link } from "react-router-dom";
 
 const FragranceCard = ({ fragrance }) => {
     return (
-        <div className="fragrance-card">
-            <img src={fragrance.image} alt={fragrance.name} className="fragrance-image" />
-            <h3>{fragrance.name}</h3>
-            <p><strong>Brand:</strong> {fragrance.brand}</p>
-            <p><strong>Launch Date:</strong> {fragrance.launch_date}</p>
-            {(fragrance.perfumers || []).length > 0 && <p><strong>Perfumers:</strong> {fragrance.perfumers.join(", ")}</p>}
-            {(fragrance.notes || []).length > 0 && <p><strong>Notes:</strong> {fragrance.notes.join(", ")}</p>}
-            {(fragrance.top_notes || []).length > 0 && <p><strong>Top Notes:</strong> {fragrance.top_notes.join(", ")}</p>}
-            {(fragrance.heart_notes || []).length > 0 && <p><strong>Heart Notes:</strong> {fragrance.heart_notes.join(", ")}</p>}
-            {(fragrance.base_notes || []).length > 0 && <p><strong>Base Notes:</strong> {fragrance.base_notes.join(", ")}</p>}
-            <p><strong>Description:</strong> {fragrance.description}</p>
+        <div className="group relative bg-white shadow-md rounded-xl overflow-hidden w-full max-w-xs mx-auto">
+            {/* Image Section */}
+            <Link to={`/fragrance/${fragrance.id}`}>
 
-            {/* Link to individual fragrance details page */}
-            <Link to={`/fragrance/${fragrance.id}`} className="details-button">
-                View Details
+                <div className="h-48 bg-white-100 flex items-center justify-center overflow-hidden">
+                    <img
+                        src={fragrance.image || "/placeholder.jpg"}
+                        alt={fragrance.name}
+                        className="object-contain h-full w-full transform transition-transform duration-300 group-hover:scale-105"
+                    />
+                </div>
             </Link>
+
+            {/* Name Overlay on Hover */}
+            <div className="absolute bottom-0 left-0 w-full bg-gray-200 bg-opacity-80 px-4 py-2 text-center transition-all group-hover:opacity-100 opacity-90">
+                <Link to={`/fragrance/${fragrance.id}`}>
+                    <h3 className="text-gray-800 text-lg font-semibold tracking-wide group-hover:text-rose-600 transition-colors duration-300">
+
+                        {fragrance.name}
+                    </h3>
+                </Link>
+            </div>
         </div>
     );
 };
