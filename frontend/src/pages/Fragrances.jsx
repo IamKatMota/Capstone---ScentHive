@@ -25,8 +25,9 @@ const Fragrances = () => {
 
     return (
         <div className="fragrance-list">
-            <h2>Explore Fragrances</h2>
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-6 px-4">                {fragrances.length > 0 ? (
+            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Explore Fragrances</h2>
+
+            <div className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-6 gap-6 px-4">                {fragrances.length > 0 ? (
                     fragrances.map((fragrance) => (
                         <FragranceCard key={fragrance.id} fragrance={fragrance} />
                     ))
