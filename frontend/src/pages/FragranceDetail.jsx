@@ -12,7 +12,7 @@ const FragranceDetail = () => {
     const [fragrance, setFragrance] = useState(null);
     const [error, setError] = useState(null);
     const [feedbackMessage, setFeedbackMessage] = useState("");
-    const [feedbackType, setFeedbackType] = useState(""); // "success" or "error"
+    const [feedbackType, setFeedbackType] = useState(""); 
 
     useEffect(() => {
         const fetchFragrance = async () => {

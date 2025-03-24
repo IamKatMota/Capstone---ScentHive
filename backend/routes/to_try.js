@@ -41,9 +41,9 @@ router.get("/", authenticateUser, async(req,res)=> {
 });
 
 //remove fragrance from collection
-router.delete("/", authenticateUser, async(req,res)=> {
+router.delete("/:fragrance_id", authenticateUser, async(req,res)=> {
     try {
-        const {fragrance_id} = req.body;
+        const fragrance_id = req.params.fragrance_id;
         const user_id = req.user.id;
 
         const result = await removeFromUserFragranceList(tableName, user_id,fragrance_id);

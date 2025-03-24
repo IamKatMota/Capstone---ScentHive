@@ -26,9 +26,9 @@ const getUserFragranceList = async (table, user_id) => {
 };
 
 // Remove a fragrance from a user’s list
-const removeFromUserFragranceList = async (table, user_id, fragrance_id) => {
+const removeFromUserFragranceList = async (tableName, user_id, fragrance_id) => {
     const result = await pool.query(
-        `DELETE FROM ${table}
+        `DELETE FROM ${tableName}
         WHERE user_id = $1 AND fragrance_id = $2
         RETURNING *`,
         [user_id, fragrance_id]
