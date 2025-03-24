@@ -39,6 +39,21 @@ router.get("/latest", async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+//Get all reviews for a user
+router.get("/user", authenticateUser, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        console.log("Fetching reviews for user:", userId);
+
+        if (!userId) return res.status(400).json({ error: "No user ID" });
+
+        const result = await getReviewsByUser(userId);
+        res.json(result);
+    } catch (err) {
+        console.error("Error fetching user's reviews:", err);
+        res.status(500).json({ error: err.message });
+    }
+});
 /**
  * Get All Reviews for a Fragrance
  * @route GET /api/reviews/:fragrance_id
@@ -52,18 +67,6 @@ router.get("/:fragrance_id", async(req,res)=> {
     } catch (error) {
         console.error("Error fetching reviews:", error);
         res.status(500).json({error: "Internal Server Error"});
-    }
-});
-
-//Get all reviews for a user
-router.get("/user", authenticateUser, async (req, res) => {
-    try {
-        const userId = req.user.id;
-        const result = await await getReviewsByUser(userId);
-        res.json(result);
-    } catch (err) {
-        console.error("Error fetching user's reviews:", err);
-        res.status(500).json({ error: "Failed to fetch reviews" });
     }
 });
 

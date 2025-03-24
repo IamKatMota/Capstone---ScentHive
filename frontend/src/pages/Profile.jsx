@@ -11,6 +11,9 @@ const Profile = () => {
     const [activeTab, setActiveTab] = useState("collection");
     const [fragrances, setFragrances] = useState([]);
     const [reviews, setReviews] = useState([]);
+    const [editingReviewId, setEditingReviewId] = useState(null);
+    const [editedContent, setEditedContent] = useState("");
+    const [editedRating, setEditedRating] = useState(5);
 
     // Fetch fragrances for the active tab
     useEffect(() => {
@@ -56,6 +59,25 @@ const Profile = () => {
         } catch (error) {
             console.error(`Failed to remove fragrance from ${activeTab}:`, error);
             alert("Could not remove fragrance. Try again.");
+        }
+    };
+    const handleEditClick = (review) => {
+        setEditingReviewId(review.id);
+        setEditedContent(review.content);
+        setEditedRating(review.rating);
+    };
+
+    const handleUpdateReview = async (reviewId) => {
+        try {
+            const response = await api.put(`/reviews/${reviewId}`, {
+                content: editedContent,
+                rating: editedRating,
+            });
+            const updated = response.data;
+            setReviews(reviews.map(r => r.id === reviewId ? updated : r));
+            setEditingReviewId(null);
+        } catch (err) {
+            console.error("Failed to update review:", err);
         }
     };
 
@@ -106,23 +128,71 @@ const Profile = () => {
                     <ul className="space-y-4">
                         {reviews.map((review) => (
                             <li key={review.id} className="bg-white p-4 rounded-md shadow-md border">
-                                <div className="flex justify-between items-center">
+                                <div className="flex justify-between items-center mb-2">
                                     <Link to={`/fragrances/${review.fragrance_id}`}>
                                         <h3 className="font-semibold text-gray-800 hover:underline">
                                             {review.fragrance_name || "Fragrance"}
                                         </h3>
                                     </Link>
-                                    <button
-                                        onClick={() => handleDeleteReview(review.id)}
-                                        className="text-sm text-red-500 hover:underline"
-                                    >
-                                        Delete
-                                    </button>
+                                    <div className="space-x-2">
+                                        <button
+                                            onClick={() => handleEditClick(review)}
+                                            className="text-sm text-blue-500 hover:underline"
+                                        >
+                                            Edit
+                                        </button>
+                                        <button
+                                            onClick={() => handleDeleteReview(review.id)}
+                                            className="text-sm text-red-500 hover:underline"
+                                        >
+                                            Delete
+                                        </button>
+                                    </div>
                                 </div>
-                                <p className="text-sm mt-2 italic text-gray-700">“{review.content}”</p>
-                                <p className="text-xs text-gray-500 mt-1">
-                                    Rating: {review.rating} ★ — {new Date(review.created_at).toLocaleDateString()}
-                                </p>
+
+                                {editingReviewId === review.id ? (
+                                    <div className="space-y-2">
+                                        <textarea
+                                            value={editedContent}
+                                            onChange={(e) => setEditedContent(e.target.value)}
+                                            className="w-full border p-2 rounded"
+                                            rows={3}
+                                        />
+                                        <select
+                                            value={editedRating}
+                                            onChange={(e) => setEditedRating(Number(e.target.value))}
+                                            className="w-24 border p-1 rounded"
+                                        >
+                                            {[5, 4, 3, 2, 1].map(num => (
+                                                <option key={num} value={num}>
+                                                    {num} Star{num > 1 && "s"}
+                                                </option>
+                                            ))}
+                                        </select>
+                                        <div className="space-x-2 mt-2">
+                                            <button
+                                                onClick={() => handleUpdateReview(review.id)}
+                                                className="bg-rose-500 text-white px-4 py-2 rounded"
+                                            >
+                                                Save
+                                            </button>
+                                            <button
+                                                onClick={() => setEditingReviewId(null)}
+                                                className="text-gray-500 hover:underline"
+                                            >
+                                                Cancel
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <>
+                                        <p className="text-sm mt-2 italic text-gray-700">“{review.content}”</p>
+                                        <p className="text-xs text-gray-500 mt-1">
+                                            Rating: {review.rating} ★ —{" "}
+                                            {new Date(review.created_at).toLocaleDateString()}
+                                        </p>
+                                    </>
+                                )}
                             </li>
                         ))}
                     </ul>
