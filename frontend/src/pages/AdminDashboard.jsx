@@ -3,6 +3,7 @@ import AuthContext from "../context/AuthContext";
 import api from "../api/api";
 import EditReviewModal from "../components/EditReviewModal";
 import EditFragranceModal from "../components/EditFragranceModal";
+import AddFragranceModal from "../components/AddFragranceModal";
 
 const AdminDashboard = () => {
     const { user } = useContext(AuthContext);
@@ -15,6 +16,8 @@ const AdminDashboard = () => {
     const [editRating, setEditRating] = useState(5);
     const [editingFragrance, setEditingFragrance] = useState(null);
     const [editFragranceData, setEditFragranceData] = useState({});
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [newFragranceData, setNewFragranceData] = useState({});
 
     useEffect(() => {
         if (user?.isAdmin) {
@@ -65,14 +68,50 @@ const AdminDashboard = () => {
             image: fragrance.image || ""
         });
     };
+    // converts string to JS array before sending to backend 
+    const parseArrayField = (input) => {
+        if (!input) return [];
+        return input
+            .split(",")
+            .map(item => item.trim())
+            .filter(Boolean);
+    };
 
     const submitFragranceEdit = async () => {
         try {
-            await api.put(`/admin/fragrances/${editingFragrance.id}`, editFragranceData);
+            const payload = {
+                ...editFragranceData,
+                perfumers: parseArrayField(editFragranceData.perfumers),
+                notes: parseArrayField(editFragranceData.notes),
+                top_notes: parseArrayField(editFragranceData.top_notes),
+                heart_notes: parseArrayField(editFragranceData.heart_notes),
+                base_notes: parseArrayField(editFragranceData.base_notes),
+            };
+    
+            await api.put(`/admin/fragrances/${editingFragrance.id}`, payload);
             setEditingFragrance(null);
             fetchFragrances();
         } catch (err) {
             console.error("Failed to update fragrance", err);
+        }
+    };
+    const submitNewFragrance = async () => {
+        try {
+            const payload = {
+                ...newFragranceData,
+                perfumers: parseArrayField(newFragranceData.perfumers),
+                notes: parseArrayField(newFragranceData.notes),
+                top_notes: parseArrayField(newFragranceData.top_notes),
+                heart_notes: parseArrayField(newFragranceData.heart_notes),
+                base_notes: parseArrayField(newFragranceData.base_notes),
+            };
+    
+            await api.post("/admin/fragrances", payload);
+            fetchFragrances();
+            setShowAddModal(false);
+            setNewFragranceData({});
+        } catch (err) {
+            console.error("Failed to add fragrance", err);
         }
     };
     const handlePromoteUser = async (userId) => {
@@ -245,10 +284,11 @@ const AdminDashboard = () => {
             {activeTab === 'fragrances' && (
                 <div>
                     <h2 className="text-2xl font-semibold mb-4">Fragrances</h2>
-                    <button className="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                    <button className="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" onClick={() => setShowAddModal(true)}
+                    >
                         + Add New Fragrance
                     </button>
-                    <ul className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    <ul className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 gap-4">
                         {fragrances.map((f) => (
                             <li key={f.id} className="bg-white p-3 border rounded shadow text-center">
                                 <img src={f.image || '/placeholder.jpg'} alt={f.name} className="h-32 w-full object-contain mb-2" />
@@ -279,7 +319,7 @@ const AdminDashboard = () => {
                     onSave={submitReviewEdit}
                 />
             )}
-            {/* fragrance modal */}
+            {/* edit fragrance modal */}
             {editingFragrance && (
                 <EditFragranceModal
                     fragrance={editingFragrance}
@@ -287,6 +327,15 @@ const AdminDashboard = () => {
                     setData={setEditFragranceData}
                     onCancel={() => setEditingFragrance(null)}
                     onSave={submitFragranceEdit}
+                />
+            )}
+            {/* add fragrance modal */}
+            {showAddModal && (
+                <AddFragranceModal
+                    data={newFragranceData}
+                    setData={setNewFragranceData}
+                    onCancel={() => setShowAddModal(false)}
+                    onSave={submitNewFragrance}
                 />
             )}
         </div>

@@ -108,7 +108,19 @@ const deleteReview = async (reviewId) => {
 };
 
 // Admin fragrance management
-const createFragrance = async (name, brand, launch_date, perfumers, notes, top_notes, heart_notes, base_notes, description, image) => {
+const createFragrance = async (data) => {
+    const {
+        name,
+        brand,
+        launch_date,
+        perfumers,
+        notes,
+        top_notes,
+        heart_notes,
+        base_notes,
+        description,
+        image
+    } = data;
     const result = await pool.query(
         `INSERT INTO fragrances (
             name, 
