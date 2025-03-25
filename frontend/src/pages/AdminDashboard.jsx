@@ -1,13 +1,17 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import api from "../api/api";
+import EditReviewModal from "../components/EditReviewModal";
 
 const AdminDashboard = () => {
-    const { user } = useContext(AuthContext);    
+    const { user } = useContext(AuthContext);
     const [users, setUsers] = useState([]);
     const [reviews, setReviews] = useState([]);
     const [fragrances, setFragrances] = useState([]);
     const [activeTab, setActiveTab] = useState("users");
+    const [editingReview, setEditingReview] = useState(null);
+    const [editContent, setEditContent] = useState("");
+    const [editRating, setEditRating] = useState(5);
 
     useEffect(() => {
         if (user?.isAdmin) {
@@ -87,6 +91,25 @@ const AdminDashboard = () => {
         }
     };
 
+    const handleEditReview = (review) => {
+        setEditingReview(review);
+        setEditContent(review.content);
+        setEditRating(review.rating);
+    };
+
+    const submitReviewEdit = async () => {
+        try {
+            await api.put(`/admin/reviews/${editingReview.id}`, {
+                content: editContent,
+                rating: editRating,
+            });
+            setEditingReview(null);
+            fetchReviews();
+        } catch (err) {
+            console.error("Failed to edit review", err);
+        }
+    };
+
     if (!user?.isAdmin) {
         return <p className="text-center mt-10 text-red-600">Access denied.</p>;
     }
@@ -130,20 +153,20 @@ const AdminDashboard = () => {
                                     <td className="p-2">{user.is_admin ? 'Admin' : 'User'}</td>
                                     <td className="p-2">{user.review_count}</td>
                                     <td className="p-2 space-x-2">
-                                        
-                                        <button 
-                                            className="text-red-500 text-xs hover:underline"            onClick={() => handleDeleteUser(user.id)}
+
+                                        <button
+                                            className="text-red-500 text-xs hover:underline" onClick={() => handleDeleteUser(user.id)}
                                         >
                                             Delete
                                         </button>
-                                        {!user.is_admin && 
+                                        {!user.is_admin &&
                                             <button
                                                 className="text-green-500 text-xs hover:underline"
                                                 onClick={() => handlePromoteUser(user.id)}
                                             >
                                                 Make Admin
                                             </button>}
-                                        {user.is_admin && 
+                                        {user.is_admin &&
                                             <button
                                                 className="text-green-500 text-xs hover:underline"
                                                 onClick={() => handleDemoteUser(user.id)}
@@ -172,8 +195,16 @@ const AdminDashboard = () => {
                                         <p className="text-xs text-gray-500 mt-1">Rating: {review.rating} ★</p>
                                     </div>
                                     <div className="space-x-2">
-                                        <button className="text-blue-500 text-xs hover:underline">Edit</button>
-                                        <button className="text-red-500 text-xs hover:underline">Delete</button>
+                                        <button
+                                            className="text-blue-500 text-xs hover:underline"
+                                            onClick={() => handleEditReview(review)}>
+                                            Edit
+                                        </button>
+                                        <button
+                                            className="text-red-500 text-xs hover:underline"
+                                            onClick={() => handleDeleteReview(review.id)}>
+                                            Delete
+                                        </button>
                                     </div>
                                 </div>
                             </li>
@@ -196,12 +227,23 @@ const AdminDashboard = () => {
                                 <p className="font-medium text-gray-800 mb-2">{f.name}</p>
                                 <div className="space-x-2">
                                     <button className="text-blue-500 text-xs hover:underline">Edit</button>
-                                    <button className="text-red-500 text-xs hover:underline">Delete</button>
+                                    <button className="text-red-500 text-xs hover:underline" onClick={() => handleDeleteFragrance(f.id)}>Delete</button>
                                 </div>
                             </li>
                         ))}
                     </ul>
                 </div>
+            )}
+            {editingReview && (
+                <EditReviewModal
+                    review={editingReview}
+                    content={editContent}
+                    setContent={setEditContent}
+                    rating={editRating}
+                    setRating={setEditRating}
+                    onCancel={() => setEditingReview(null)}
+                    onSave={submitReviewEdit}
+                />
             )}
         </div>
     );

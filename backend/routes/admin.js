@@ -97,7 +97,8 @@ router.get("/reviews", async (req, res) => {
 // Update review
 router.put("/reviews/:id", async (req, res) => {
     try {
-        const result = await updateReview(req.params.id, req.body);
+        const { content, rating } = req.body;
+        const result = await updateReview(req.params.id, content, rating);
         res.status(200).json(result);
     } catch (error) {
         console.error("Error updating review:", error);
