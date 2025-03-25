@@ -192,7 +192,7 @@ router.post("/import-fragrances", requireAdmin, async (req, res) => {
         res.status(200).json({ message: "Fragrances imported successfully." });
     } catch (error) {
         console.error("❌ Import failed:", error);
-        res.status(500).json({ error: "Failed to import fragrances." });
+        res.status(500).json({ error: error.message || "Failed to import fragrances." });
     }
 });
 
