@@ -144,7 +144,19 @@ const getAllFragrances = async () => {
     return result.rows;
 };
 
-const updateFragrance = async (id, name, brand, launch_date, perfumers, notes, top_notes, heart_notes, base_notes, description, image) => {
+const updateFragrance = async (id, data) => {
+    const {
+        name,
+        brand,
+        launch_date,
+        perfumers,
+        notes,
+        top_notes,
+        heart_notes,
+        base_notes,
+        description,
+        image
+    } = data;
     const result = await pool.query(
         `UPDATE fragrances 
         SET 

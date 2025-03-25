@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../context/AuthContext";
 import api from "../api/api";
 import EditReviewModal from "../components/EditReviewModal";
+import EditFragranceModal from "../components/EditFragranceModal";
 
 const AdminDashboard = () => {
     const { user } = useContext(AuthContext);
@@ -12,6 +13,8 @@ const AdminDashboard = () => {
     const [editingReview, setEditingReview] = useState(null);
     const [editContent, setEditContent] = useState("");
     const [editRating, setEditRating] = useState(5);
+    const [editingFragrance, setEditingFragrance] = useState(null);
+    const [editFragranceData, setEditFragranceData] = useState({});
 
     useEffect(() => {
         if (user?.isAdmin) {
@@ -45,6 +48,31 @@ const AdminDashboard = () => {
             setFragrances(response.data);
         } catch (err) {
             console.error("Failed to fetch fragrances", err);
+        }
+    };
+    const handleEditFragrance = (fragrance) => {
+        setEditingFragrance(fragrance);
+        setEditFragranceData({
+            name: fragrance.name || "",
+            brand: fragrance.brand || "",
+            launch_date: fragrance.launch_date || "",
+            perfumers: fragrance.perfumers || "",
+            notes: fragrance.notes || "",
+            top_notes: fragrance.top_notes || "",
+            heart_notes: fragrance.heart_notes || "",
+            base_notes: fragrance.base_notes || "",
+            description: fragrance.description || "",
+            image: fragrance.image || ""
+        });
+    };
+
+    const submitFragranceEdit = async () => {
+        try {
+            await api.put(`/admin/fragrances/${editingFragrance.id}`, editFragranceData);
+            setEditingFragrance(null);
+            fetchFragrances();
+        } catch (err) {
+            console.error("Failed to update fragrance", err);
         }
     };
     const handlePromoteUser = async (userId) => {
@@ -226,7 +254,11 @@ const AdminDashboard = () => {
                                 <img src={f.image || '/placeholder.jpg'} alt={f.name} className="h-32 w-full object-contain mb-2" />
                                 <p className="font-medium text-gray-800 mb-2">{f.name}</p>
                                 <div className="space-x-2">
-                                    <button className="text-blue-500 text-xs hover:underline">Edit</button>
+                                    <button
+                                        className="text-blue-500 text-xs hover:underline"
+                                        onClick={() => handleEditFragrance(f)}>
+                                        Edit
+                                    </button>
                                     <button className="text-red-500 text-xs hover:underline" onClick={() => handleDeleteFragrance(f.id)}>Delete</button>
                                 </div>
                             </li>
@@ -234,6 +266,8 @@ const AdminDashboard = () => {
                     </ul>
                 </div>
             )}
+            {/* review modal */}
+
             {editingReview && (
                 <EditReviewModal
                     review={editingReview}
@@ -243,6 +277,16 @@ const AdminDashboard = () => {
                     setRating={setEditRating}
                     onCancel={() => setEditingReview(null)}
                     onSave={submitReviewEdit}
+                />
+            )}
+            {/* fragrance modal */}
+            {editingFragrance && (
+                <EditFragranceModal
+                    fragrance={editingFragrance}
+                    data={editFragranceData}
+                    setData={setEditFragranceData}
+                    onCancel={() => setEditingFragrance(null)}
+                    onSave={submitFragranceEdit}
                 />
             )}
         </div>
