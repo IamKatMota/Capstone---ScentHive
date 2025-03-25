@@ -19,7 +19,10 @@ const app = express();
 const PORT = process.env.PORT || 5001;
 
 //middleware
-app.use(cors());
+app.use(cors({
+    origin: "https://scenthive.vercel.app/", 
+    credentials: true
+}));
 app.use(express.json()); //auto converts request body to js object
 
 //API routes
