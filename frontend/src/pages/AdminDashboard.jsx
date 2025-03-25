@@ -4,6 +4,7 @@ import api from "../api/api";
 import EditReviewModal from "../components/EditReviewModal";
 import EditFragranceModal from "../components/EditFragranceModal";
 import AddFragranceModal from "../components/AddFragranceModal";
+import FragranceImportForm from "../components/FragranceImportForm";
 
 const AdminDashboard = () => {
     const { user } = useContext(AuthContext);
@@ -284,6 +285,7 @@ const AdminDashboard = () => {
             {activeTab === 'fragrances' && (
                 <div>
                     <h2 className="text-2xl font-semibold mb-4">Fragrances</h2>
+                    <FragranceImportForm />
                     <button className="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" onClick={() => setShowAddModal(true)}
                     >
                         + Add New Fragrance
