@@ -1,6 +1,7 @@
 const pool = require("./db");
 const bcrypt = require("bcrypt"); //import bcrypt lib to hash pass for security
 const fs = require("fs"); //import file system module
+const path = require("path");
 
 const seedDatabase = async() => {
     try {
@@ -41,7 +42,7 @@ const seedDatabase = async() => {
 
         //insert test fragrances
         //read json file
-        const rawData = fs.readFileSync("db/fragrances.json")
+        const rawData = fs.readFileSync(path.join(__dirname,"db/fragrances.json"))
         const fragrances = JSON.parse(rawData);
 
         //loop through array of frag objects from the json and extract ids
