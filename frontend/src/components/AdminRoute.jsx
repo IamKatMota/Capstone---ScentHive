@@ -3,13 +3,13 @@ import { Navigate, Outlet } from "react-router-dom";
 import AuthContext from "../context/AuthContext";
 
 const AdminRoute = () => {
-    const { authToken, isAdmin } = useContext(AuthContext);
-    
-    if (!authToken) {
-        return <Navigate to="/login" />; // Redirect if not logged in
-    }
-    
-    return isAdmin ? <Outlet /> : <Navigate to="/" />; // Redirect non-admins to home
+    const { user } = useContext(AuthContext);
+
+    if (user === null) {
+        return <p className="text-center mt-10">Loading...</p>;
+    }    
+
+    return user?.isAdmin ? <Outlet /> : <Navigate to="/login" />;
 };
 
 export default AdminRoute;

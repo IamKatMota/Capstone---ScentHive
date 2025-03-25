@@ -17,7 +17,7 @@ const init = async() => {
         DROP TABLE IF EXISTS to_try;
         DROP TABLE IF EXISTS had;
         DROP TABLE IF EXISTS fragrances CASCADE;
-        DROP TABLE IF EXISTS users;
+        DROP TABLE IF EXISTS users CASCADE;
 
         CREATE TABLE users (
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -37,7 +37,8 @@ const init = async() => {
             notes TEXT[],
             top_notes TEXT[],  -- Stores top notes as an array
             heart_notes TEXT[], 
-            base_notes TEXT[],            description TEXT,
+            base_notes TEXT[],            
+            description TEXT,
             image TEXT,
             created_at TIMESTAMP DEFAULT NOW()
         );
@@ -46,8 +47,8 @@ const init = async() => {
             id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
             content TEXT NOT NULL,
             rating INTEGER NOT NULL CHECK (rating BETWEEN 1 AND 5),
-            fragrance_id UUID REFERENCES fragrances(id),
-            user_id UUID REFERENCES users(id),
+            fragrance_id UUID REFERENCES fragrances(id) ON DELETE CASCADE,
+            user_id UUID REFERENCES users(id) ON DELETE CASCADE,
             created_at TIMESTAMP DEFAULT NOW()
         );
 

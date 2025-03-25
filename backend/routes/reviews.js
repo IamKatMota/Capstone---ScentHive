@@ -100,9 +100,9 @@ router.patch("/:id", authenticateUser, async (req,res)=>{
 });
 
 /**
- * Delete Review (Only by Reviewer or Admin)
+ * Delete Review (Only by Reviewer)
  * @route DELETE /api/reviews/:id
- * @access Private (Reviewer or Admin)
+ * @access Private (Reviewer)
  */
 
 router.delete("/:id", authenticateUser, async (req,res)=> {
@@ -111,8 +111,7 @@ router.delete("/:id", authenticateUser, async (req,res)=> {
     try {
         const result = await deleteReview(
             reviewId,
-            req.user.id,
-            req.user.is_admin
+            req.user.id        
         );
         if (!result) return res.status(500).json({error: "Unauthorized to delete this review"});
 

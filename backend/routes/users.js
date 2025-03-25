@@ -3,13 +3,10 @@ const jwt = require("jsonwebtoken");
 const pool = require("../db/db");
 const bcrypt = require("bcrypt");
 const authenticateUser = require("../middleware/authenticateUser");
-const requireAdmin = require("../middleware/requireAdmin");
 const {
     registerUser,
     getUserByEmail,
     getUserById,
-    getAllUsers,
-    promoteUserToAdmin,
 } = require("../models/userModel");
 
 
@@ -72,39 +69,7 @@ router.get("/me", authenticateUser, async (req,res) => {
     }
 });
 
-/**
- * Get ALL Users (Admin only)
- * @route GET /api/users
- * @access Private 
- */
-router.get("/", authenticateUser, requireAdmin, async (req,res) => {
-    try {
-        const result = await getAllUsers();
-        res.status(200).json(result);
-    } catch (error) {
-        console.error("Error fetching users:", error);
-        res.status(500).json({error:"Internal Server Error"});
-    }
-});
 
-/**
- * Update admin status (Admin only)
- * @route PATCH /api/:id/admin
- * @access Private
- */
-
-router.patch("/promote/:id", authenticateUser, requireAdmin, async (req,res) => {
-    const {id} = req.params;
-    console.log("Promoting user ID:", id); // Debugging log
-
-    try {
-        const result = await promoteUserToAdmin(id);
-        res.status(200).json({message: "User promoted to admin.", result: result});
-    } catch (error) {
-        console.error("Error updating user:", error);
-        res.status(500).json({error: "Internal Server Error"});
-    }
-});
 
 module.exports = router;
 

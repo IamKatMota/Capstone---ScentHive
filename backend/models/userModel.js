@@ -45,31 +45,11 @@ const getUserById = async (userId) => {
     return result.rows[0]; 
 };
 
-// Get all users (Admin only)
-const getAllUsers = async () => {
-    const result = await pool.query(
-        `SELECT id, name, email, is_admin FROM users`
-    );
-    return result.rows; 
-};
 
-// Promote a user to admin (Admin only)
-const promoteUserToAdmin = async (userId) => {
-    const result =  await pool.query(`
-        UPDATE users 
-        SET is_admin = true 
-        WHERE id = $1
-        RETURNING *`, 
-        [userId]
-    );
-    return result.rows[0];
-};
 
 
 module.exports = {
     registerUser,
     getUserByEmail,
     getUserById,
-    getAllUsers,
-    promoteUserToAdmin
 };

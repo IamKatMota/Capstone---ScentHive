@@ -96,13 +96,13 @@ const editReview = async (id, content, rating, user_id, is_admin) => {
 };
 
 // Delete a review
-const deleteReview = async (id, user_id, is_admin) => {
+const deleteReview = async (id, user_id) => {
     const result = await pool.query(`
         DELETE FROM reviews
         WHERE id = $1
         AND (user_id = $2 OR $3 = true)
         RETURNING *`,
-        [id, user_id, is_admin]
+        [id, user_id]
     );
     return result.rows[0];
 };

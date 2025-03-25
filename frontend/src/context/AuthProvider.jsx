@@ -11,11 +11,12 @@ const AuthProvider = ({ children }) => {
 
     useEffect(() => {
         if (authToken) {
-            localStorage.setItem("authToken", authToken); // Store token
-            localStorage.setItem("isAdmin", isAdmin); // Store admin status
             try {
                 const decoded = jwtDecode(authToken);
+                const isAdmin = decoded.is_admin; 
                 setUser({ id: decoded.id, isAdmin: decoded.is_admin });
+                localStorage.setItem("authToken", authToken); // Store token
+                localStorage.setItem("isAdmin", isAdmin); // Store admin status
             } catch (error) {
                 console.error("Invalid token:", error);
                 setUser(null);

@@ -1,10 +1,10 @@
 import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import AuthContext from "../context/AuthContext"; 
+import AuthContext from "../context/AuthContext";
 import api from "../api/api";
 
 const Navbar = () => {
-    const { authToken, setAuthToken, isAdmin, setIsAdmin } = useContext(AuthContext); 
+    const { authToken, setAuthToken, user } = useContext(AuthContext);
     const [searchQuery, setSearchQuery] = useState("");
     const [searchResults, setSearchResults] = useState([]);
     const navigate = useNavigate();
@@ -12,7 +12,6 @@ const Navbar = () => {
     // Logout function: clears token & admin status
     const handleLogout = () => {
         setAuthToken(null);
-        setIsAdmin(false);
         localStorage.removeItem("authToken");
         localStorage.removeItem("isAdmin");
         navigate("/login"); // Redirect to login page
@@ -23,7 +22,7 @@ const Navbar = () => {
         setSearchQuery(query);
         try {
             const response = await api.get(`/fragrances/search?q=${query}`);
-            
+
             setSearchResults(response.data);
 
         } catch (error) {
@@ -46,8 +45,14 @@ const Navbar = () => {
                     <ul className="flex gap-x-8">
                         <li><Link to="/" className="hover:text-blue-600 font-bold">Home</Link></li>
                         <li><Link to="/fragrances" className="hover:text-blue-600 font-bold">Fragrances</Link></li>
-                        {authToken && <li><Link to="/profile" className="hover:text-blue-600 font-bold">Profile</Link></li>}
-                        {authToken && isAdmin && <li><Link to="/admin" className="hover:text-blue-600 font-bold">Admin</Link></li>}
+                        {authToken && (
+                            <li><Link to="/profile" className="hover:text-blue-600 font-bold">Profile</Link></li>
+                        )}
+                        {user?.isAdmin && (
+                            <li><Link to="/admin" className="text-sm text-gray-700 hover:text-rose-500 font-semibold">
+                                Admin Dashboard
+                            </Link></li>
+                        )}
                     </ul>
                 </div>
 

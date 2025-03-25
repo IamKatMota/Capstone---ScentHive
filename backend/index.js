@@ -13,6 +13,7 @@ const collectionRoutes = require("./routes/collection");
 const hadRoutes = require("./routes/had");
 const dislikedRoutes = require("./routes/disliked");
 const to_tryRoutes = require("./routes/to_try");
+const adminRoutes = require("./routes/admin");
 
 const app = express();
 const PORT = process.env.PORT || 5001;
@@ -30,6 +31,7 @@ app.use("/api/had", hadRoutes);
 app.use("/api/to_try", to_tryRoutes);
 app.use("/api/collection", collectionRoutes);
 app.use("/api/disliked", dislikedRoutes);
+app.use("/api/admin", adminRoutes);
 
 //default route
 app.get("/", (req, res) => {
