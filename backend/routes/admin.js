@@ -131,6 +131,70 @@ router.get("/fragrances", async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+//bulk import fragrances from json file
+router.post("/import-fragrances", requireAdmin, async (req, res) => {
+    try {
+        const fragrances = req.body; // JSON array from upload
+
+        for (const frag of fragrances) {
+            const exists = await pool.query(
+                `SELECT * FROM fragrances 
+                WHERE name = $1 AND brand = $2`,
+                [frag.name, frag.brand]
+            );
+            if (exists.rows.length > 0) {
+                console.log(`🟡 Skipping duplicate: ${frag.name}`);
+                continue;
+            }
+
+            await pool.query(
+                `INSERT INTO fragrances (
+                    id, 
+                    name, 
+                    brand, 
+                    launch_date, 
+                    perfumers,
+                    notes, 
+                    top_notes, 
+                    heart_notes, 
+                    base_notes,
+                    description, 
+                    image
+                ) 
+                VALUES (
+                    gen_random_uuid(), 
+                    $1, 
+                    $2, 
+                    $3, 
+                    $4,
+                    $5, 
+                    $6, 
+                    $7, 
+                    $8, 
+                    $9, 
+                    $10
+                )`,
+                [
+                    frag.name,
+                    frag.brand,
+                    frag.launch_date,
+                    frag.perfumers,
+                    frag.notes,
+                    frag.top_notes,
+                    frag.heart_notes,
+                    frag.base_notes,
+                    frag.description,
+                    frag.image
+                ]
+            );
+        }
+
+        res.status(200).json({ message: "Fragrances imported successfully." });
+    } catch (error) {
+        console.error("❌ Import failed:", error);
+        res.status(500).json({ error: "Failed to import fragrances." });
+    }
+});
 
 // Create fragrance
 router.post("/fragrances", async (req, res) => {
