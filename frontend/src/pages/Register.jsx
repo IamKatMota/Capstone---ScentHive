@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import api from "../api/api";
 
@@ -8,12 +8,14 @@ const Register = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
         try {
             await api.post("/users/register", { name, email, password }); // Send registration request
-            alert("User registered successfully!");
+            navigate("/login");
+
         } catch (error) {
             setError("Registration failed", error);
         }
