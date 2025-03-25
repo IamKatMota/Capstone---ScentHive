@@ -42,7 +42,7 @@ const seedDatabase = async() => {
 
         //insert test fragrances
         //read json file
-        const rawData = fs.readFileSync(path.join(__dirname,"db/fragrances.json"))
+        const rawData = fs.readFileSync(path.join(__dirname,"/fragrances.json"))
         const fragrances = JSON.parse(rawData);
 
         //loop through array of frag objects from the json and extract ids
