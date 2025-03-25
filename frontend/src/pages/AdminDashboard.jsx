@@ -19,6 +19,7 @@ const AdminDashboard = () => {
     const [editFragranceData, setEditFragranceData] = useState({});
     const [showAddModal, setShowAddModal] = useState(false);
     const [newFragranceData, setNewFragranceData] = useState({});
+    const [searchQuery, setSearchQuery] = useState("");
 
     useEffect(() => {
         if (user?.isAdmin) {
@@ -88,7 +89,7 @@ const AdminDashboard = () => {
                 heart_notes: parseArrayField(editFragranceData.heart_notes),
                 base_notes: parseArrayField(editFragranceData.base_notes),
             };
-    
+
             await api.put(`/admin/fragrances/${editingFragrance.id}`, payload);
             setEditingFragrance(null);
             fetchFragrances();
@@ -106,7 +107,7 @@ const AdminDashboard = () => {
                 heart_notes: parseArrayField(newFragranceData.heart_notes),
                 base_notes: parseArrayField(newFragranceData.base_notes),
             };
-    
+
             await api.post("/admin/fragrances", payload);
             fetchFragrances();
             setShowAddModal(false);
@@ -178,6 +179,11 @@ const AdminDashboard = () => {
         }
     };
 
+    const filteredFragrances = fragrances.filter((frag) =>
+        frag.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        frag.brand.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     if (!user?.isAdmin) {
         return <p className="text-center mt-10 text-red-600">Access denied.</p>;
     }
@@ -185,6 +191,24 @@ const AdminDashboard = () => {
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold text-center mb-8">Admin Dashboard</h1>
+        {/* search for fragrances */}
+            <input
+                type="text"
+                placeholder="Search fragrances by name or brand..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="mb-4 w-full p-2 border border-gray-300 rounded"
+            />
+
+            {filteredFragrances.length === 0 ? (
+                <p>No fragrances match your search.</p>
+            ) : (
+                <div className="grid gap-4 md:grid-cols-2">
+                    {filteredFragrances.map((frag) => (
+                        <FragranceItem key={frag.id} fragrance={frag} />
+                    ))}
+                </div>
+            )}
 
             {/* Tabs */}
             <div className="flex justify-center gap-4 mb-6">
