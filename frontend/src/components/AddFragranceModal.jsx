@@ -1,10 +1,19 @@
 import React from "react";
+import { useEffect } from "react";
+
 
 const AddFragranceModal = ({ data, setData, onCancel, onSave }) => {
     const handleChange = (e) => {
         const { name, value } = e.target;
         setData((prev) => ({ ...prev, [name]: value }));
     };
+     //prevents scrolling when modal open 
+        useEffect(() => {
+            document.body.style.overflow = "hidden";
+            return () => {
+                document.body.style.overflow = "auto";
+            };
+        }, []);
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-white/40 backdrop-blur z-50">
