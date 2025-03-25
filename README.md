@@ -19,9 +19,7 @@ Scent Hive is a **Fragrantica-inspired web application** where users can **explo
 - **Deployment:**  
   - 🌐 **Frontend:** [Vercel](https://scenthive.vercel.app/)  
   - 🔧 **Backend:** [Render](https://scenthive.onrender.com)
-## **📦 Installation & Setup**
-### **🔧 Prerequisites**
-- Install **Node.js** and **PostgreSQL** on your machine
+
 
 ### **🛠 API Endpoints**
 ### **🔧 User Authentication**
