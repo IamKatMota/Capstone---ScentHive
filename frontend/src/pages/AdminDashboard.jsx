@@ -191,24 +191,6 @@ const AdminDashboard = () => {
     return (
         <div className="max-w-6xl mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold text-center mb-8">Admin Dashboard</h1>
-        {/* search for fragrances */}
-            <input
-                type="text"
-                placeholder="Search fragrances by name or brand..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="mb-4 w-full p-2 border border-gray-300 rounded"
-            />
-
-            {filteredFragrances.length === 0 ? (
-                <p>No fragrances match your search.</p>
-            ) : (
-                <div className="grid gap-4 md:grid-cols-2">
-                    {filteredFragrances.map((frag) => (
-                        <FragranceItem key={frag.id} fragrance={frag} />
-                    ))}
-                </div>
-            )}
 
             {/* Tabs */}
             <div className="flex justify-center gap-4 mb-6">
@@ -310,12 +292,19 @@ const AdminDashboard = () => {
                 <div>
                     <h2 className="text-2xl font-semibold mb-4">Fragrances</h2>
                     <FragranceImportForm />
+                    <input
+                        type="text"
+                        placeholder="Search fragrances by name or brand..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="mb-4 w-full p-2 border border-gray-300 rounded"
+                    />
                     <button className="mb-4 bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700" onClick={() => setShowAddModal(true)}
                     >
                         + Add New Fragrance
                     </button>
                     <ul className="grid grid-cols-4 sm:grid-cols-4 md:grid-cols-4 gap-4">
-                        {fragrances.map((f) => (
+                        {filteredFragrances.map((f) => (
                             <li key={f.id} className="bg-white p-3 border rounded shadow text-center">
                                 <img src={f.image || '/placeholder.jpg'} alt={f.name} className="h-32 w-full object-contain mb-2" />
                                 <p className="font-medium text-gray-800 mb-2">{f.name}</p>
