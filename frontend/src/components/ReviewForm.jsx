@@ -22,7 +22,7 @@ const ReviewForm = ({ fragranceId, onReviewSubmit }) => {
             setSuccess("Review submitted successfully!");
             setContent("");
             setRating(5);
-            if (onReviewSubmit) onReviewSubmit(); // Callback to refresh reviews
+            if (onReviewSubmit) onReviewSubmit(response.data.review); // Callback to refresh reviews
         } catch (err) {
             console.error(err);
             setError("Failed to submit review. Please try again.");

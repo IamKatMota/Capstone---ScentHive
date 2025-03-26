@@ -1,28 +1,10 @@
-import { useEffect, useState, useContext } from "react";
+import { useState, useContext } from "react";
 import api from "../api/api";
 import AuthContext from "../context/AuthContext";
 
-const ReviewList = ({ fragranceId }) => {
+const ReviewList = ({ reviews, setReviews }) => {
     const { user } = useContext(AuthContext); // get user from context
-    const [reviews, setReviews] = useState([]);
-    const [loading, setLoading] = useState(true);
     const [error, setError] = useState("");
-
-    useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const response = await api.get(`/reviews/${fragranceId}`);
-                setReviews(response.data);
-            } catch (err) {
-                console.error("Error fetching reviews:", err);
-                setError("Failed to load reviews.");
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        fetchReviews();
-    }, [fragranceId]);
 
     const handleDelete = async (reviewId) => {
         const confirmed = window.confirm("Are you sure you want to delete this review?");
@@ -30,10 +12,12 @@ const ReviewList = ({ fragranceId }) => {
 
         try {
             await api.delete(`/reviews/${reviewId}`);
-            setReviews(reviews.filter((r) => r.id !== reviewId));
+            // Use setReviews from props to update the list
+            setReviews((prev) => prev.filter((r) => r.id !== reviewId));
         } catch (err) {
             console.error("Failed to delete review:", err);
             alert("Error deleting review.");
+            setError(err);
         }
     };
 
@@ -46,7 +30,6 @@ const ReviewList = ({ fragranceId }) => {
         ));
     };
 
-    if (loading) return <p className="text-gray-500 mt-4">Loading reviews...</p>;
     if (error) return <p className="text-red-500 mt-4">{error}</p>;
     if (reviews.length === 0) return <p className="text-gray-600 mt-4">No reviews yet. Be the first!</p>;
 

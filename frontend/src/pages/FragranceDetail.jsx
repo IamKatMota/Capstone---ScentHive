@@ -10,6 +10,7 @@ const FragranceDetail = () => {
     const { user } = useContext(AuthContext);
 
     const [fragrance, setFragrance] = useState(null);
+    const [reviews, setReviews] = useState([]);
     const [error, setError] = useState(null);
     const [feedbackMessage, setFeedbackMessage] = useState("");
     const [feedbackType, setFeedbackType] = useState(""); 
@@ -19,12 +20,18 @@ const FragranceDetail = () => {
             try {
                 const response = await api.get(`fragrances/${id}`);
                 setFragrance(response.data);
+                
             } catch (err) {
                 console.error("Error fetching fragrance:", err);
                 setError("Fragrance not found.");
             }
         };
+        const fetchReviews = async () => {
+            const response = await api.get(`/reviews/${id}`);
+            setReviews(response.data);
+        };
         fetchFragrance();
+        fetchReviews();
     }, [id]);
 
     const handleAddToList = async (listType) => {
@@ -46,6 +53,11 @@ const FragranceDetail = () => {
             }
         }
     };
+    // when a new review is added, update the state
+    const handleReviewAdded = (newReview) => {
+        setReviews(prev => [newReview, ...prev]);
+    };
+
 
     if (error) return <p className="text-center text-red-600 mt-10">{error}</p>;
     if (!fragrance) return <p className="text-center mt-10">Loading...</p>;
@@ -124,8 +136,8 @@ const FragranceDetail = () => {
                 {/* Reviews */}
                 <div className="border-t pt-6 mt-10">
                     <h2 className="text-xl font-semibold mb-4 text-gray-800">User Reviews</h2>
-                    <ReviewForm fragranceId={id} />
-                    <ReviewList fragranceId={id} />
+                    <ReviewForm fragranceId={id} onReviewSubmit={handleReviewAdded} />
+                    <ReviewList fragranceId={id} reviews={reviews} setReviews={setReviews}/>
                 </div>
             </div>
         </div>
