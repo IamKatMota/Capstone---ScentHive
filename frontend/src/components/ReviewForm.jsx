@@ -26,7 +26,7 @@ const ReviewForm = ({ fragranceId, onReviewSubmit }) => {
         } catch (err) {
             console.error("Review submission error:", err);
 
-            if (err.response && err.response.status === 401) {
+            if (err.response?.status === 401 || err.response?.status === 403) {
                 setError("You must be logged in to submit a review.");
             } else {
                 setError("Failed to submit review. Please try again.");
