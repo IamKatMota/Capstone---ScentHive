@@ -32,6 +32,7 @@ const ReviewForm = ({ fragranceId, onReviewSubmit }) => {
                 setError("Failed to submit review. Please try again.");
             }
         }
+    }
 
         return (
             <main className="w-full flex justify-center items-center py-10 bg-[#f9f5f0]">
