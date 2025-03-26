@@ -1,9 +1,7 @@
-import { useState, useContext } from "react";
-import AuthContext from "../context/AuthContext";
+import { useState } from "react";
 import api from "../api/api";
 
 const ReviewForm = ({ fragranceId, onReviewSubmit }) => {
-    const { authToken } = useContext(AuthContext);
     const [rating, setRating] = useState(5);
     const [content, setContent] = useState("");
     const [error, setError] = useState("");
