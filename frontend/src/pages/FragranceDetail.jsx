@@ -36,7 +36,7 @@ const FragranceDetail = () => {
 
     const handleAddToList = async (listType) => {
         try {
-            const response = await api.post(`/${listType}`, {
+            await api.post(`/${listType}`, {
                 fragrance_id: fragrance.id,
             });
 
