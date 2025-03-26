@@ -100,7 +100,7 @@ const deleteReview = async (id, user_id) => {
     const result = await pool.query(`
         DELETE FROM reviews
         WHERE id = $1
-        AND (user_id = $2 OR $3 = true)
+        AND user_id = $2 
         RETURNING *`,
         [id, user_id]
     );

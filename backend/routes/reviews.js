@@ -113,7 +113,7 @@ router.delete("/:id", authenticateUser, async (req,res)=> {
             reviewId,
             req.user.id        
         );
-        if (!result) return res.status(500).json({error: "Unauthorized to delete this review"});
+        if (!result) return res.status(403).json({error: "Unauthorized to delete this review"});
 
         res.status(200).json({message: "Review deleted successfully", deletedReview: result});
     } catch (error) {

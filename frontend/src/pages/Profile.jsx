@@ -31,15 +31,16 @@ const Profile = () => {
     }, [activeTab]);
 
     // Fetch user reviews
+    const fetchReviews = async () => {
+        try {
+            const response = await api.get("/reviews/user");
+            setReviews(response.data);
+        } catch (error) {
+            console.error("Error loading reviews:", error);
+        }
+    };
+    
     useEffect(() => {
-        const fetchReviews = async () => {
-            try {
-                const response = await api.get("/reviews/user");
-                setReviews(response.data);
-            } catch (error) {
-                console.error("Error loading reviews:", error);
-            }
-        };
         if (user) fetchReviews();
     }, [user]);
 
@@ -47,6 +48,7 @@ const Profile = () => {
         try {
             await api.delete(`/reviews/${reviewId}`);
             setReviews(reviews.filter(r => r.id !== reviewId));
+            await fetchReviews(); //refresh
         } catch (err) {
             console.error("Failed to delete review:", err);
         }
@@ -75,6 +77,7 @@ const Profile = () => {
             });
             const updated = response.data;
             setReviews(reviews.map(r => r.id === reviewId ? updated : r));
+            await fetchReviews(); 
             setEditingReviewId(null);
         } catch (err) {
             console.error("Failed to update review:", err);
