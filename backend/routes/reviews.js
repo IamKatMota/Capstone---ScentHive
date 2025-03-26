@@ -20,10 +20,11 @@ const router = express.Router();
 router.post("/", authenticateUser, async (req,res)=> {
     const {fragrance_id, content, rating} = req.body;
     const user_id = req.user.id;
+    const reviewer = req.user.name; 
 
     try {
         const result = await addReview(fragrance_id, user_id, content, rating);
-        res.status(201).json({message: "Review added successfully", review: result});
+        res.status(201).json({message: "Review added successfully", review: {...result, reviewer}});
     } catch (error) {
         console.error("Error adding review", error);
         res.status(500).json({error: "Internal Server Error"});
