@@ -69,7 +69,7 @@ const Profile = () => {
 
     const handleUpdateReview = async (reviewId) => {
         try {
-            const response = await api.put(`/reviews/${reviewId}`, {
+            const response = await api.patch(`/reviews/${reviewId}`, {
                 content: editedContent,
                 rating: editedRating,
             });
