@@ -14,7 +14,8 @@ const authenticateUser = (req, res, next) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);//decode and verify token using secret key in env
         req.user = {
             id: decoded.id,
-        is_admin: decoded.is_admin} //attach user info to request object
+            name: decoded.name,
+            is_admin: decoded.is_admin} //attach user info to request object
         next();
     } catch (error) {
         return res.status(403).json({error: "Forbidden: invalid token"});
